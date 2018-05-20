@@ -1,0 +1,35 @@
+{
+  "name": "debitpay",
+  "version": "1.0.0",
+  "description": "Simple app which decodes Bitpay payment links into Bitcoin transaction requirements, so that you could make the payments with Bitcoin wallets not supporting Bitpay.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "webpack-dev-server --mode=development --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alex Kaul",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "bootstrap": "^4.1.1",
+    "clipboard": "^2.0.1",
+    "css-loader": "^0.28.11",
+    "html-webpack-plugin": "^3.2.0",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.3",
+    "sha.js": "^2.4.11",
+    "style-loader": "^0.21.0",
+    "url-parse": "^1.4.0",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexk111/DeBitpay.git"
+  }
+}
