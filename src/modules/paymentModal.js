@@ -13,7 +13,7 @@ const paymentFormLabels = {
   'amountBTC': 'Amount',
   'amount': 'Amount in Satoshis',
   'address': 'Address',
-  'bip21Link': 'Bitcoin URI'
+  'bip21Link': 'Open in Wallet'
 }
 
 const paymentFormInfoStruct = [
@@ -32,12 +32,16 @@ const paymentFormTextAreas = [
   'memo'
 ]
 
+const paymentFormLinks = [
+  'bip21Link'
+]
+
 const paymentFormQRCodeEnabled = [
   'bip21Link'
 ]
 
 const paymentFormCopyEnabled = [
-  'amountBTC', 'amount', 'address', 'bip21Link'
+  'amountBTC', 'amount', 'address'
 ]
 
 function genInputOrTextArea (dataKey, dataVal) {
@@ -81,19 +85,23 @@ function paymentDataToModalContentItem (data, item) {
       $item.append($subItem)
     })
   } else {
-    $item = $(`
-      <div class="form-group">
-        <label>${paymentFormLabels[item]}</label>
-      </div>
-    `)
-    const $itemInput = genInputOrTextArea(item, data[item])
-    $item.append($itemInput)
-    if (paymentFormQRCodeEnabled.indexOf(item) > -1) {
-      const $itemQRCode = genQRCode(data[item])
-      $itemQRCode.addClass('img-fluid')
-      const $item2 = $('<div class="text-center"></div>')
-      $item2.append($itemQRCode)
-      return [$item, $item2]
+    if (paymentFormLinks.indexOf(item) > -1) {
+      $item = $(`<div class="text-center"></div>`)
+      if (paymentFormQRCodeEnabled.indexOf(item) > -1) {
+        const $itemQRCode = genQRCode(data[item])
+        $itemQRCode.addClass('img-fluid')
+        $item.append($itemQRCode)
+      }
+      const $itemBtn = $(`<div><a href="${data[item]}" class="btn btn-lg btn-primary">${paymentFormLabels[item]}</a><div>`)
+      $item.append($itemBtn)
+    } else {
+      $item = $(`
+        <div class="form-group">
+          <label>${paymentFormLabels[item]}</label>
+        </div>
+      `)
+      const $itemInput = genInputOrTextArea(item, data[item])
+      $item.append($itemInput)
     }
   }
   return [$item]
@@ -107,7 +115,6 @@ export function paymentDataToModalContent (data) {
   $content.append('<hr>')
   data.outputs.forEach((output) => {
     output.amountBTC = satsToBTC(output.amount)
-    console.log(data.currency)
     output.bip21Link = encodeBip21Link(data.currency === 'BCH', output.address, output.amountBTC, 'Bitpay', 'Payment')
     paymentFormTxStruct.forEach((item) => {
       $content.append.apply($content, paymentDataToModalContentItem(output, item))
