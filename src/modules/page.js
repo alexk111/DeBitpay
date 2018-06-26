@@ -4,6 +4,7 @@ import {normalizePaymentLink} from './paymentLink'
 import {getAndParsePaymentRequest} from './paymentRequest'
 import {showModal} from './modals'
 import {paymentDataToModalContent} from './paymentModal'
+import {htmlHowItWorks} from './howItWorks'
 
 function getParsingState () {
   return (!!$('#indexForm button').prop('disabled'))
@@ -38,6 +39,13 @@ function initParseButton () {
   })
 }
 
+function initHowItWorks () {
+  $('button.how-it-works').click((evt) => {
+    evt.preventDefault()
+    showModal('How it works?', htmlHowItWorks, { size: 'lg' })
+  })
+}
+
 function initFooter () {
   btnToCopyBtn($('footer .btn-clipboard'))
 }
@@ -48,6 +56,7 @@ function loadingDone () {
 
 export function initPage () {
   initParseButton()
+  initHowItWorks()
   initFooter()
   loadingDone()
 }
