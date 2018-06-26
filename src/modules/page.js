@@ -42,7 +42,12 @@ function initFooter () {
   btnToCopyBtn($('footer .btn-clipboard'))
 }
 
+function loadingDone () {
+  $('body > .is-loading').remove()
+}
+
 export function initPage () {
   initParseButton()
   initFooter()
+  loadingDone()
 }
