@@ -1,4 +1,4 @@
-## Open DeBitpay: [https://alexk111.github.io/DeBitpay/](https://alexk111.github.io/DeBitpay/)
+## Launch DeBitpay 👉 [https://alexk111.github.io/DeBitpay/](https://alexk111.github.io/DeBitpay/)
 
 DeBitpay is hosted on GitHub via [https://github.com/alexk111/DeBitpay/tree/gh-pages](gh-pages) branch consisting of compiled /dist files.
 
