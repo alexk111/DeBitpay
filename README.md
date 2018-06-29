@@ -1,8 +1,10 @@
-# DeBitpay
+## Open DeBitpay: [https://alexk111.github.io/DeBitpay/](https://alexk111.github.io/DeBitpay/)
 
-> Does your Bitcoin wallet not support Bitpay payments? DeBitpay is a simple app which decodes Bitpay payment links into Bitcoin transaction requirements, so that you could make the payments with Bitcoin wallets not supporting Bitpay.
+DeBitpay is hosted on GitHub via [https://github.com/alexk111/DeBitpay/tree/gh-pages](gh-pages) branch consisting of compiled /dist files.
 
-Open DeBitpay: [https://alexk111.github.io/DeBitpay/](https://alexk111.github.io/DeBitpay/) (hosted on GitHub via [https://github.com/alexk111/DeBitpay/tree/gh-pages](gh-pages) branch consisting of built /dist files)
+## DeBitpay
+
+Does your Bitcoin wallet not support Bitpay payments? DeBitpay is a simple app which decodes Bitpay payment links into Bitcoin transaction requirements, so that you could make the payments with Bitcoin wallets not supporting Bitpay.
 
 ## Story Behind the App
 
