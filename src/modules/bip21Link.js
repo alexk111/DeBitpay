@@ -6,9 +6,11 @@
 // bitcoincash:<address>[?amount=<amount>][?label=<label>][?message=<message>]
 
 export function encodeBip21Link (isBCH, address, amount, label, message) {
+  const parts = []
+  if (amount) parts.push('amount=' + encodeURIComponent(amount))
+  if (label) parts.push('label=' + encodeURIComponent(label))
+  if (message) parts.push('message=' + encodeURIComponent(message))
   return (isBCH ? 'bitcoincash' : 'bitcoin') + ':' + address +
-          (amount ? '?amount=' + encodeURIComponent(amount) : '') +
-          (label ? '?label=' + encodeURIComponent(label) : '') +
-          (message ? '?message=' + encodeURIComponent(message) : '')
+          (parts ? '?' + parts.join('&') : '')
 }
 

@@ -7,7 +7,7 @@ import qrcode from 'qrcode-generator'
 const paymentFormLabels = {
   'currency': 'Currency',
   'requiredFeeRate': 'Fee Rate (sats/byte)',
-  'time': 'Creaated at',
+  'time': 'Created at',
   'expires': 'Expires at',
   'memo': 'Memo',
   'amountBTC': 'Amount',
