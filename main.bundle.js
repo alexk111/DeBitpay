@@ -465,8 +465,12 @@ function paymentDataToModalContent(data) {
   });
   return $content;
 }
+// CONCATENATED MODULE: ./src/modules/howToRunLocally.js
+var htmlHowToRunLocally = "\n  <p>For increased security, you can run DeBitpay on your computer instead of from the GitHub servers.</p>\n  <p class=\"h5\">Downloading and installing</p>\n  <ol>\n    <li>Download the latest release of DeBitpay <a href=\"https://github.com/alexk111/DeBitpay/releases\" target=\"_blank\">here</a>, by clicking on <code>debitpay-vX.X.X.zip</code> under the release assets </li>\n    <li>Extract the downloaded zip archive to a folder at your computer. You should now have a folder containing three files: <code>index.html</code>, <code>main.bundle.js</code> and <code>vendors.bundle.js</code></li>\n  </ol>\n  <p class=\"h5\">Running DeBitpay locally</p>\n  <ol>\n    <li>Double-click the <code>index.html</code> file</li>\n    <li>Local version of DeBitpay should open in your browser</li>\n  </ol>\n";
 // CONCATENATED MODULE: ./src/modules/howItWorks.js
 var htmlHowItWorks = "\n  <p>When you press the <i>Get Transaction Requirements</i> button:</p>\n  <ol>\n    <li>DeBitpay extracts an invoice url from the entered payment url (string after 'bitcoin:?r='), or keeps the url as is if you entered an invoice url (begins with http:// or https://)</li>\n    <li>DeBitpay loads data from the invoice url using a HTTP GET request with 'Accept: application/payment-request' header</li>\n    <li>DeBitpay shows a window with the data returned by the invoice url, structured and formatted for convenience. Bitcoin amount is calculated from satoshis data, QR Code image and Open In Wallet button are rendered from Address and Amount data, the rest data is shown as-is without modifications.</li>\n  </ol>\n  <p class=\"alert alert-info\">Entered Invoice URL is the only external resource DeBitpay connects to. No analytics, no external scripts, etc.</p>\n";
+// CONCATENATED MODULE: ./src/modules/importantNotice.js
+var htmlImportantNotice = "\n  <p>DeBitpay should be used as a temporary solution - that's not how Bitcoin transactions supposed to work! Each time you extract data with DeBitpay and pay an invoice, please let the merchant know that you had to use DeBitpay in order to make the payment. Ask them to provide support for native Bitcoin transactions. And share your experience in social media, so that smart competitors could see a market opportunity in this issue. At the end, you should be able to make payments from your wallet to merchants directly, without DeBitpay.</p>\n";
 // CONCATENATED MODULE: ./src/modules/page.js
 
 
@@ -476,12 +480,23 @@ var htmlHowItWorks = "\n  <p>When you press the <i>Get Transaction Requirements<
 
 
 
+
+
+var isLocalApp = window.location.protocol === 'file:';
+
 function getParsingState() {
   return !!jquery_default()('#indexForm button').prop('disabled');
 }
 
 function setParsingState(val) {
   jquery_default()('#indexForm button').prop('disabled', val);
+}
+
+function initTitle() {
+  if (isLocalApp) {
+    jquery_default()('#app-title').text('DeBitpay (Local)');
+    document.title = 'DeBitpay (Local)';
+  }
 }
 
 function initParseButton() {
@@ -507,10 +522,29 @@ function initParseButton() {
   });
 }
 
+function initHowToRunLocally() {
+  if (isLocalApp) {
+    // hide 'how to run locally' button if local version is opened
+    jquery_default()('button.how-to-run-locally').remove();
+  } else {
+    jquery_default()('button.how-to-run-locally').click(function (evt) {
+      evt.preventDefault();
+      showModal('How To Run DeBitpay Locally', htmlHowToRunLocally, { size: 'lg' });
+    });
+  }
+}
+
 function initHowItWorks() {
   jquery_default()('button.how-it-works').click(function (evt) {
     evt.preventDefault();
-    showModal('How it works?', htmlHowItWorks, { size: 'lg' });
+    showModal('How It Works', htmlHowItWorks, { size: 'lg' });
+  });
+}
+
+function initImportantNotice() {
+  jquery_default()('button.important-notice').click(function (evt) {
+    evt.preventDefault();
+    showModal('Important Notice', htmlImportantNotice, { size: 'lg' });
   });
 }
 
@@ -523,8 +557,11 @@ function loadingDone() {
 }
 
 function initPage() {
+  initTitle();
   initParseButton();
+  initHowToRunLocally();
   initHowItWorks();
+  initImportantNotice();
   initFooter();
   loadingDone();
 }
