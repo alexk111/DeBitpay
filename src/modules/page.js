@@ -4,7 +4,11 @@ import {normalizePaymentLink} from './paymentLink'
 import {getAndParsePaymentRequest} from './paymentRequest'
 import {showModal} from './modals'
 import {paymentDataToModalContent} from './paymentModal'
+import {htmlHowToRunLocally} from './howToRunLocally'
 import {htmlHowItWorks} from './howItWorks'
+import {htmlImportantNotice} from './importantNotice'
+
+const isLocalApp = (window.location.protocol === 'file:')
 
 function getParsingState () {
   return (!!$('#indexForm button').prop('disabled'))
@@ -12,6 +16,13 @@ function getParsingState () {
 
 function setParsingState (val) {
   $('#indexForm button').prop('disabled', val)
+}
+
+function initTitle () {
+  if (isLocalApp) {
+    $('#app-title').text('DeBitpay (Local)')
+    document.title = 'DeBitpay (Local)'
+  }
 }
 
 function initParseButton () {
@@ -39,10 +50,29 @@ function initParseButton () {
   })
 }
 
+function initHowToRunLocally () {
+  if (isLocalApp) {
+    // hide 'how to run locally' button if local version is opened
+    $('button.how-to-run-locally').remove()
+  } else {
+    $('button.how-to-run-locally').click((evt) => {
+      evt.preventDefault()
+      showModal('How To Run DeBitpay Locally', htmlHowToRunLocally, { size: 'lg' })
+    })
+  }
+}
+
 function initHowItWorks () {
   $('button.how-it-works').click((evt) => {
     evt.preventDefault()
-    showModal('How it works?', htmlHowItWorks, { size: 'lg' })
+    showModal('How It Works', htmlHowItWorks, { size: 'lg' })
+  })
+}
+
+function initImportantNotice () {
+  $('button.important-notice').click((evt) => {
+    evt.preventDefault()
+    showModal('Important Notice', htmlImportantNotice, { size: 'lg' })
   })
 }
 
@@ -55,8 +85,11 @@ function loadingDone () {
 }
 
 export function initPage () {
+  initTitle()
   initParseButton()
+  initHowToRunLocally()
   initHowItWorks()
+  initImportantNotice()
   initFooter()
   loadingDone()
 }
