@@ -13,7 +13,7 @@ I make Bitcoin payments thru Bitpay from time to time. Everything went good unti
 The app is basically a nice wrapper around the following code.  You could use the below, running on your own system, to verify that the output of the app is showing you the right QR code and that your wallet is reading it properly.
 
 ### Equivalent cURL
-```curl -X GET http://bitpay.com/i/$BITPAYINVOICEID -H 'accept: application/payment-request'```
+```curl -X GET https://bitpay.com/i/$BITPAYINVOICEID -H 'accept: application/payment-request'```
 ### Equivalent Python
 ```python
 from requests import get
