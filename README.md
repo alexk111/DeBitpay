@@ -24,6 +24,8 @@ Due to a missing header in responses from Bitpay servers I had to skip a hash ve
 
 ## Installing on your system
 
+### Download
+
 1. [Download DeBitpay](https://github.com/alexk111/DeBitpay/archive/master.zip) from GitHub.
 2. Unpack the downloaded zip and install dependencies:
 
@@ -31,7 +33,7 @@ Due to a missing header in responses from Bitpay servers I had to skip a hash ve
 npm install
 ```
 
-## Build
+### Build
 
 ```
 npm run build
@@ -39,9 +41,13 @@ npm run build
 
 The command will build the app in /dist folder.
 
-## Open
+### Open
 
 Go to /dist folder and open *index.html* with your browser.
+
+## 💝 Donations are always appreciated!
+
+BTC Donation Address: 3DJGzZnhHzNA7sKday7hjSWG6uveuG2hUA
 
 ## License
 
