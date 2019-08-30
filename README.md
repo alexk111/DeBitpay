@@ -47,7 +47,7 @@ Go to /dist folder and open *index.html* with your browser.
 
 ## 💝 Donations are always appreciated!
 
-BTC Donation Address: 3DJGzZnhHzNA7sKday7hjSWG6uveuG2hUA
+Donate Bitcoin: https://donate.alexkaul.com/debitpay
 
 ## License
 
