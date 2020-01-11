@@ -7,6 +7,7 @@ import {paymentDataToModalContent} from './paymentModal'
 import {htmlHowToRunLocally} from './howToRunLocally'
 import {htmlHowItWorks} from './howItWorks'
 import {htmlImportantNotice} from './importantNotice'
+import {showDonationScreen, preloadDonationScreen} from './donation'
 
 const isLocalApp = (window.location.protocol === 'file:')
 
@@ -76,6 +77,16 @@ function initImportantNotice () {
   })
 }
 
+function initDonate() {
+  $('button.donate').click(evt => {
+    evt.preventDefault()
+    showDonationScreen()
+  })
+  $('button.donate').mouseover(_ => {
+    preloadDonationScreen()
+  })
+}
+
 function initFooter () {
   btnToCopyBtn($('footer .btn-clipboard'))
 }
@@ -90,6 +101,7 @@ export function initPage () {
   initHowToRunLocally()
   initHowItWorks()
   initImportantNotice()
+  initDonate()
   initFooter()
   loadingDone()
 }
