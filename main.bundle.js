@@ -148,24 +148,25 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([14,1]);
+/******/ 	deferredModules.push([13,1]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 14:
+/***/ 13:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/bootstrap/dist/css/bootstrap.min.css
 var bootstrap_min = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./node_modules/bootstrap/dist/js/bootstrap.js
-var bootstrap = __webpack_require__(10);
+var bootstrap = __webpack_require__(9);
 
 // EXTERNAL MODULE: ./node_modules/jquery/dist/jquery.js
 var jquery = __webpack_require__(0);
@@ -178,7 +179,6 @@ var clipboard_default = /*#__PURE__*/__webpack_require__.n(dist_clipboard);
 // CONCATENATED MODULE: ./src/modules/clipboard.js
 
 
-
 function btnToCopyBtn($btn, $container) {
   $btn.tooltip().on('mouseleave', function () {
     jquery_default()(this).tooltip('hide');
@@ -188,17 +188,13 @@ function btnToCopyBtn($btn, $container) {
     var clipboard = new clipboard_default.a($btn[i], {
       container: $container ? $container[0] : undefined
     });
-
     clipboard.on('success', function (e) {
       jquery_default()(e.trigger).attr('title', 'Copied!').tooltip('_fixTitle').tooltip('show').attr('title', 'Copy to clipboard').tooltip('_fixTitle');
-
       e.clearSelection();
     });
-
     clipboard.on('error', function (e) {
-      var modifierKey = /Mac/i.test(navigator.userAgent) ? '\u2318' : 'Ctrl-';
+      var modifierKey = /Mac/i.test(navigator.userAgent) ? "\u2318" : 'Ctrl-';
       var fallbackMsg = 'Press ' + modifierKey + 'C to copy';
-
       jquery_default()(e.trigger).attr('title', fallbackMsg).tooltip('_fixTitle').tooltip('show').attr('title', 'Copy to clipboard').tooltip('_fixTitle');
     });
   }
@@ -206,6 +202,7 @@ function btnToCopyBtn($btn, $container) {
 // CONCATENATED MODULE: ./src/modules/paymentLink.js
 function normalizePaymentLink(paymentLink) {
   var pos = paymentLink.indexOf('?id=');
+
   if (pos > -1) {
     // bitpay invoice url
     return 'bitcoin:?r=https://bitpay.com/i/' + paymentLink.substr(pos + 4);
@@ -218,9 +215,7 @@ var url_parse = __webpack_require__(3);
 var url_parse_default = /*#__PURE__*/__webpack_require__.n(url_parse);
 
 // CONCATENATED MODULE: ./src/modules/paymentRequest.js
-
-
-// import shajs from 'sha.js'
+ // import shajs from 'sha.js'
 
 
 /*
@@ -231,10 +226,8 @@ var url_parse_default = /*#__PURE__*/__webpack_require__.n(url_parse);
 
 function getRawPaymentRequest(paymentUrl) {
   var deferred = jquery_default.a.Deferred();
+  var paymentUrlObject = new url_parse_default.a(paymentUrl, true); // Detect 'bitcoin:' urls and extract payment-protocol section
 
-  var paymentUrlObject = new url_parse_default.a(paymentUrl, true);
-
-  // Detect 'bitcoin:' urls and extract payment-protocol section
   if (paymentUrlObject.protocol !== 'http:' && paymentUrlObject.protocol !== 'https:') {
     if (!paymentUrlObject.query.r) {
       return deferred.reject(new Error('Invalid payment protocol url'));
@@ -250,7 +243,6 @@ function getRawPaymentRequest(paymentUrl) {
       'Accept': 'application/payment-request'
     }
   };
-
   jquery_default.a.get(requestOptions).done(function (data, textStatus, jqXHR) {
     /* See [Header Issue] section above
     const digest = jqXHR.getResponseHeader('digest')
@@ -264,30 +256,28 @@ function getRawPaymentRequest(paymentUrl) {
   }).fail(function (xhr) {
     deferred.reject(xhr.responseText || 'Could not get data for the specified payment request');
   });
-
   return deferred;
 }
 
 function parsePaymentRequest(rawBody, digestHeader) {
   var deferred = jquery_default.a.Deferred();
-  var paymentRequest = void 0;
+  var paymentRequest;
 
   if (!rawBody) {
     return deferred.reject('Parameter rawBody is required');
   }
-
   /* See [Header Issue] section above
   if (!digestHeader) {
     return deferred.reject('Parameter digestHeader is required')
   }
   */
 
+
   try {
     paymentRequest = JSON.parse(rawBody);
   } catch (e) {
-    return deferred.reject('Unable to parse request - ' + e);
+    return deferred.reject("Unable to parse request - ".concat(e));
   }
-
   /* See [Header Issue] section above
   const digest = digestHeader.split('=')[1]
   const hash = shajs('sha256').update(rawBody).digest('hex')
@@ -296,12 +286,12 @@ function parsePaymentRequest(rawBody, digestHeader) {
   }
   */
 
+
   return deferred.resolve(paymentRequest);
 }
 
 function getAndParsePaymentRequest(paymentUrl) {
   var deferred = jquery_default.a.Deferred();
-
   getRawPaymentRequest(paymentUrl).done(function (data, digest) {
     parsePaymentRequest(data, digest).done(function (parsedRequest) {
       deferred.resolve(parsedRequest);
@@ -311,18 +301,13 @@ function getAndParsePaymentRequest(paymentUrl) {
   }).fail(function (err) {
     deferred.reject(err);
   });
-
   return deferred;
 }
 // CONCATENATED MODULE: ./src/modules/modals.js
 
 
-
-
-var tplModal = '\n<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <h5 class="modal-title"></h5>\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n          <span aria-hidden="true">&times;</span>\n        </button>\n      </div>\n      <div class="modal-body">\n      </div>\n      <div class="modal-footer">\n        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>\n      </div>\n    </div>\n  </div>\n</div>\n';
-
-var $modal = void 0;
-
+var tplModal = "\n<div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\"></h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n      </div>\n    </div>\n  </div>\n</div>\n";
+var $modal;
 function showModal(title, $content, opts) {
   opts = opts || {};
 
@@ -333,25 +318,24 @@ function showModal(title, $content, opts) {
   $modal = jquery_default()(tplModal);
   jquery_default()('.modal-title', $modal).text(title);
   jquery_default()('.modal-body', $modal).append($content);
+
   if (opts.size) {
     jquery_default()('.modal-dialog', $modal).addClass('modal-' + opts.size);
     jquery_default()('.modal-footer .btn', $modal).addClass('btn-' + opts.size);
   }
+
   $modal.appendTo('body').modal({
     keyboard: true,
     show: true
   });
-
   btnToCopyBtn(jquery_default()('.btn-clipboard', $modal), $modal);
 }
 // CONCATENATED MODULE: ./src/modules/bip21Link.js
 // Implements BIP 0021 Link Encoding
 // More: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
-
 // Format:
 // bitcoin:<address>[?amount=<amount>][?label=<label>][?message=<message>]
 // bitcoincash:<address>[?amount=<amount>][?label=<label>][?message=<message>]
-
 function encodeBip21Link(isBCH, address, amount, label, message) {
   var parts = [];
   if (amount) parts.push('amount=' + encodeURIComponent(amount));
@@ -368,9 +352,7 @@ var qrcode = __webpack_require__(4);
 var qrcode_default = /*#__PURE__*/__webpack_require__.n(qrcode);
 
 // CONCATENATED MODULE: ./src/modules/paymentModal.js
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
 
@@ -387,27 +369,22 @@ var paymentFormLabels = {
   'address': 'Address',
   'bip21Link': 'Open in Wallet'
 };
-
 var paymentFormInfoStruct = [['currency', 'requiredFeeRate'], ['time', 'expires'], 'memo'];
-
 var paymentFormTxStruct = [['amountBTC', 'amount'], 'address', 'bip21Link'];
-
 var paymentFormTextAreas = ['memo'];
-
 var paymentFormLinks = ['bip21Link'];
-
 var paymentFormQRCodeEnabled = ['bip21Link'];
-
 var paymentFormCopyEnabled = ['amountBTC', 'amount', 'address'];
 
 function genInputOrTextArea(dataKey, dataVal) {
   if (paymentFormTextAreas.indexOf(dataKey) > -1) {
-    return jquery_default()('<textarea class="form-control form-control-lg" readonly>' + dataVal + '</textarea>');
+    return jquery_default()("<textarea class=\"form-control form-control-lg\" readonly>".concat(dataVal, "</textarea>"));
   } else {
-    var $input = jquery_default()('<input type="text" class="form-control form-control-lg" value="' + dataVal + '" readonly>');
+    var $input = jquery_default()("<input type=\"text\" class=\"form-control form-control-lg\" value=\"".concat(dataVal, "\" readonly>"));
+
     if (paymentFormCopyEnabled.indexOf(dataKey) > -1) {
       var $inputGroup = jquery_default()('<div class="input-group"></div>');
-      $inputGroup.append($input).append('\n        <div class="input-group-append">\n          <button class="btn btn-clipboard btn-success btn-lg" data-clipboard-text="' + dataVal + '" title="Copy to clipboard">COPY</button>\n        </div>\n      ');
+      $inputGroup.append($input).append("\n        <div class=\"input-group-append\">\n          <button class=\"btn btn-clipboard btn-success btn-lg\" data-clipboard-text=\"".concat(dataVal, "\" title=\"Copy to clipboard\">COPY</button>\n        </div>\n      "));
       return $inputGroup;
     } else {
       return $input;
@@ -423,31 +400,35 @@ function genQRCode(dataVal) {
 }
 
 function paymentDataToModalContentItem(data, item) {
-  var $item = void 0;
-  if ((typeof item === 'undefined' ? 'undefined' : _typeof(item)) === _typeof([])) {
+  var $item;
+
+  if (_typeof(item) === _typeof([])) {
     $item = jquery_default()('<div class="form-row"></div>');
     item.forEach(function (subItem) {
-      var $subItem = jquery_default()('\n        <div class="form-group col-lg">\n          <label>' + paymentFormLabels[subItem] + '</label>\n        </div>\n      ');
+      var $subItem = jquery_default()("\n        <div class=\"form-group col-lg\">\n          <label>".concat(paymentFormLabels[subItem], "</label>\n        </div>\n      "));
       var $subItemInput = genInputOrTextArea(subItem, data[subItem]);
       $subItem.append($subItemInput);
       $item.append($subItem);
     });
   } else {
     if (paymentFormLinks.indexOf(item) > -1) {
-      $item = jquery_default()('<div class="text-center"></div>');
+      $item = jquery_default()("<div class=\"text-center\"></div>");
+
       if (paymentFormQRCodeEnabled.indexOf(item) > -1) {
         var $itemQRCode = genQRCode(data[item]);
         $itemQRCode.addClass('img-fluid');
         $item.append($itemQRCode);
       }
-      var $itemBtn = jquery_default()('<div><a href="' + data[item] + '" class="btn btn-lg btn-primary">' + paymentFormLabels[item] + '</a><div>');
+
+      var $itemBtn = jquery_default()("<div><a href=\"".concat(data[item], "\" class=\"btn btn-lg btn-primary\">").concat(paymentFormLabels[item], "</a><div>"));
       $item.append($itemBtn);
     } else {
-      $item = jquery_default()('\n        <div class="form-group">\n          <label>' + paymentFormLabels[item] + '</label>\n        </div>\n      ');
+      $item = jquery_default()("\n        <div class=\"form-group\">\n          <label>".concat(paymentFormLabels[item], "</label>\n        </div>\n      "));
       var $itemInput = genInputOrTextArea(item, data[item]);
       $item.append($itemInput);
     }
   }
+
   return [$item];
 }
 
@@ -474,14 +455,10 @@ var htmlHowItWorks = "\n  <p>When you press the <i>Get Transaction Requirements<
 var htmlImportantNotice = "\n  <p>DeBitpay should be used as a temporary solution - that's not how Bitcoin transactions supposed to work! Each time you extract data with DeBitpay and pay an invoice, please ask the merchant to switch to another payment processor. <a href=\"https://alexk111.github.io/DeBitpay-Merchants/\" target=\"_blank\">Read more...</a></p>\n";
 // CONCATENATED MODULE: ./src/modules/donation.js
 
-
 var urlOneTimeAddress = 'https://donate.alexkaul.com/debitpay/widget?isTransparentBg=1';
-
-var tplScreen = '\n<div>\n  <iframe\n    src="' + urlOneTimeAddress + '"\n    allowtransparency="true"\n    style="position: fixed; left: 0; top:0; display: block; width: 100%; height: 100%; border: none; background: rgba(204, 207, 210, 0.75); background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(204, 207, 210, 0.75) 100%);"\n  ></iframe>\n  <button\n    type="button"\n    class="close"\n    aria-label="Close"\n    style="position: fixed; right: 40px; top:20px;"\n  >\n    <span aria-hidden="true">&times;</span>\n  </button>\n</div>\n';
-
-var $donationScreen = void 0;
-var $preloadLink = void 0;
-
+var tplScreen = "\n<div>\n  <iframe\n    src=\"".concat(urlOneTimeAddress, "\"\n    allowtransparency=\"true\"\n    style=\"position: fixed; left: 0; top:0; display: block; width: 100%; height: 100%; border: none; background: rgba(204, 207, 210, 0.75); background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(204, 207, 210, 0.75) 100%);\"\n  ></iframe>\n  <button\n    type=\"button\"\n    class=\"close\"\n    aria-label=\"Close\"\n    style=\"position: fixed; right: 40px; top:20px;\"\n  >\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n");
+var $donationScreen;
+var $preloadLink;
 function showDonationScreen() {
   if ($donationScreen) {
     $donationScreen.remove();
@@ -498,15 +475,14 @@ function showDonationScreen() {
     });
   });
 }
-
 function preloadDonationScreen() {
   if (!$preloadLink) {
-    $preloadLink = jquery_default()('<link rel="prefetch" href="' + urlOneTimeAddress + '">'); // use prefetch, because preload produces a warning for as=document
+    $preloadLink = jquery_default()("<link rel=\"prefetch\" href=\"".concat(urlOneTimeAddress, "\">")); // use prefetch, because preload produces a warning for as=document
+
     $preloadLink.appendTo('head');
   }
 }
 // CONCATENATED MODULE: ./src/modules/page.js
-
 
 
 
@@ -541,9 +517,12 @@ function initParseButton() {
     if (!getParsingState()) {
       setParsingState(true);
       var invUrl = jquery_default()('#indexForm input').val();
+
       if (invUrl) {
         getAndParsePaymentRequest(normalizePaymentLink(invUrl)).done(function (data) {
-          showModal('Payment Request Data', paymentDataToModalContent(data), { size: 'lg' });
+          showModal('Payment Request Data', paymentDataToModalContent(data), {
+            size: 'lg'
+          });
           setParsingState(false);
         }).fail(function (err) {
           showModal('Error', err);
@@ -564,7 +543,9 @@ function initHowToRunLocally() {
   } else {
     jquery_default()('button.how-to-run-locally').click(function (evt) {
       evt.preventDefault();
-      showModal('How To Run DeBitpay Locally', htmlHowToRunLocally, { size: 'lg' });
+      showModal('How To Run DeBitpay Locally', htmlHowToRunLocally, {
+        size: 'lg'
+      });
     });
   }
 }
@@ -572,14 +553,18 @@ function initHowToRunLocally() {
 function initHowItWorks() {
   jquery_default()('button.how-it-works').click(function (evt) {
     evt.preventDefault();
-    showModal('How It Works', htmlHowItWorks, { size: 'lg' });
+    showModal('How It Works', htmlHowItWorks, {
+      size: 'lg'
+    });
   });
 }
 
 function initImportantNotice() {
   jquery_default()('button.important-notice').click(function (evt) {
     evt.preventDefault();
-    showModal('Important Notice', htmlImportantNotice, { size: 'lg' });
+    showModal('Important Notice', htmlImportantNotice, {
+      size: 'lg'
+    });
   });
 }
 
@@ -612,8 +597,6 @@ function initPage() {
   loadingDone();
 }
 // CONCATENATED MODULE: ./src/index.js
-
-
 
 
 
