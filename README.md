@@ -30,13 +30,13 @@ Due to a missing header in responses from Bitpay servers I had to skip a hash ve
 2. Unpack the downloaded zip and install dependencies:
 
 ```
-npm install
+yarn install
 ```
 
 ### Build
 
 ```
-npm run build
+yarn run build
 ```
 
 The command will build the app in /dist folder.
