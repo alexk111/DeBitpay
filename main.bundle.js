@@ -281,7 +281,7 @@ function parsePaymentRequest(rawBody, digestHeader) {
   /* See [Header Issue] section above
   const digest = digestHeader.split('=')[1]
   const hash = shajs('sha256').update(rawBody).digest('hex')
-    if (digest !== hash) {
+   if (digest !== hash) {
     return deferred.reject(`Response body hash does not match digest header. Actual: ${hash} Expected: ${digest}`)
   }
   */
