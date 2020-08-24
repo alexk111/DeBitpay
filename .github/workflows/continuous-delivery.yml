@@ -1,0 +1,82 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  buildAndDeploy:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: get tag
+        id: get_tag
+        shell: bash
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+
+      - uses: actions/checkout@v2.2.0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 12.16.1
+
+      - name: Install Deps
+        run: |
+          yarn install
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@3.5.9
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: dist
+
+      - name: Build Assets
+        id: build_assets
+        shell: bash
+        run: |
+          release_name="debitpay-${{ steps.get_tag.outputs.tag }}"
+          mv dist "${release_name}"
+          release_zip="${release_name}.zip"
+          release_tar="${release_name}.tar.gz"
+          zip -r "${release_zip}" "${release_name}"
+          tar czvf "${release_tar}" "${release_name}"
+          echo ::set-output name=release_zip::${release_zip}
+          echo ::set-output name=release_tar::${release_tar}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_tag.outputs.tag }}"
+          release_name: DeBitpay ${{ steps.get_tag.outputs.tag }}"
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ steps.build_assets.outputs.release_zip }}
+          asset_name: ${{ steps.build_assets.outputs.release_zip }}
+          asset_content_type: application/zip
+
+      - name: Upload Release Tar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ steps.build_assets.outputs.release_tar }}
+          asset_name: ${{ steps.build_assets.outputs.release_tar }}
+          asset_content_type: application/gzip
