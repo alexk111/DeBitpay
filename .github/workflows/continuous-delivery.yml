@@ -56,8 +56,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_tag.outputs.tag }}"
-          release_name: DeBitpay ${{ steps.get_tag.outputs.tag }}"
+          tag_name: ${{ steps.get_tag.outputs.tag }}
+          release_name: DeBitpay ${{ steps.get_tag.outputs.tag }}
           draft: false
           prerelease: false
 
