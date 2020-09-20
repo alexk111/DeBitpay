@@ -163,7 +163,7 @@
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/bootstrap/dist/css/bootstrap.min.css
-var bootstrap_min = __webpack_require__(5);
+var bootstrap_min = __webpack_require__(6);
 
 // EXTERNAL MODULE: ./node_modules/bootstrap/dist/js/bootstrap.js
 var bootstrap = __webpack_require__(9);
@@ -173,7 +173,7 @@ var jquery = __webpack_require__(0);
 var jquery_default = /*#__PURE__*/__webpack_require__.n(jquery);
 
 // EXTERNAL MODULE: ./node_modules/clipboard/dist/clipboard.js
-var dist_clipboard = __webpack_require__(2);
+var dist_clipboard = __webpack_require__(3);
 var clipboard_default = /*#__PURE__*/__webpack_require__.n(dist_clipboard);
 
 // CONCATENATED MODULE: ./src/modules/clipboard.js
@@ -211,7 +211,7 @@ function normalizePaymentLink(paymentLink) {
   return paymentLink;
 }
 // EXTERNAL MODULE: ./node_modules/url-parse/index.js
-var url_parse = __webpack_require__(3);
+var url_parse = __webpack_require__(4);
 var url_parse_default = /*#__PURE__*/__webpack_require__.n(url_parse);
 
 // CONCATENATED MODULE: ./src/modules/paymentRequest.js
@@ -348,7 +348,7 @@ function satsToBTC(sats) {
   return sats / 100000000;
 }
 // EXTERNAL MODULE: ./node_modules/qrcode-generator/qrcode.js
-var qrcode = __webpack_require__(4);
+var qrcode = __webpack_require__(5);
 var qrcode_default = /*#__PURE__*/__webpack_require__.n(qrcode);
 
 // CONCATENATED MODULE: ./src/modules/paymentModal.js
