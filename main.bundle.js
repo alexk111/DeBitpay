@@ -453,35 +453,6 @@ var htmlHowToRunLocally = "\n  <p>For increased security, you can run DeBitpay o
 var htmlHowItWorks = "\n  <p>When you press the <i>Get Transaction Requirements</i> button:</p>\n  <ol>\n    <li>DeBitpay extracts an invoice url from the entered payment url (string after 'bitcoin:?r='), or keeps the url as is if you entered an invoice url (begins with http:// or https://)</li>\n    <li>DeBitpay loads data from the invoice url using a HTTP GET request with 'Accept: application/payment-request' header</li>\n    <li>DeBitpay shows a window with the data returned by the invoice url, structured and formatted for convenience. Bitcoin amount is calculated from satoshis data, QR Code image and Open In Wallet button are rendered from Address and Amount data, the rest data is shown as-is without modifications.</li>\n  </ol>\n  <p class=\"alert alert-info\">Entered Invoice URL is the only external resource DeBitpay connects to. No analytics, no external scripts, etc.</p>\n";
 // CONCATENATED MODULE: ./src/modules/importantNotice.js
 var htmlImportantNotice = "\n  <p>DeBitpay should be used as a temporary solution - that's not how Bitcoin transactions supposed to work! Each time you extract data with DeBitpay and pay an invoice, please ask the merchant to switch to another payment processor. <a href=\"https://alexk111.github.io/DeBitpay-Merchants/\" target=\"_blank\">Read more...</a></p>\n";
-// CONCATENATED MODULE: ./src/modules/donation.js
-
-var urlOneTimeAddress = 'https://donate.alexkaul.com/debitpay/widget?isTransparentBg=1';
-var tplScreen = "\n<div>\n  <iframe\n    src=\"".concat(urlOneTimeAddress, "\"\n    allowtransparency=\"true\"\n    style=\"position: fixed; left: 0; top:0; display: block; width: 100%; height: 100%; border: none; background: rgba(204, 207, 210, 0.75); background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(204, 207, 210, 0.75) 100%);\"\n  ></iframe>\n  <button\n    type=\"button\"\n    class=\"close\"\n    aria-label=\"Close\"\n    style=\"position: fixed; right: 40px; top:20px;\"\n  >\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n");
-var $donationScreen;
-var $preloadLink;
-function showDonationScreen() {
-  if ($donationScreen) {
-    $donationScreen.remove();
-  }
-
-  $donationScreen = jquery_default()(tplScreen);
-  jquery_default()('html').css('overflow', 'hidden');
-  $donationScreen.hide().appendTo('body').fadeIn(300, 'swing');
-  jquery_default()('button.close', $donationScreen).click(function (evt) {
-    evt.preventDefault();
-    $donationScreen.fadeOut(300, 'swing', function () {
-      jquery_default()(this).remove();
-      jquery_default()('html').css('overflow', '');
-    });
-  });
-}
-function preloadDonationScreen() {
-  if (!$preloadLink) {
-    $preloadLink = jquery_default()("<link rel=\"prefetch\" href=\"".concat(urlOneTimeAddress, "\">")); // use prefetch, because preload produces a warning for as=document
-
-    $preloadLink.appendTo('head');
-  }
-}
 // CONCATENATED MODULE: ./src/modules/page.js
 
 
@@ -492,44 +463,43 @@ function preloadDonationScreen() {
 
 
 
-
-var isLocalApp = window.location.protocol === 'file:';
+var isLocalApp = window.location.protocol === "file:";
 
 function getParsingState() {
-  return !!jquery_default()('#indexForm button').prop('disabled');
+  return !!jquery_default()("#indexForm button").prop("disabled");
 }
 
 function setParsingState(val) {
-  jquery_default()('#indexForm button').prop('disabled', val);
+  jquery_default()("#indexForm button").prop("disabled", val);
 }
 
 function initTitle() {
   if (isLocalApp) {
-    jquery_default()('#app-title').text('DeBitpay (Local)');
-    document.title = 'DeBitpay (Local)';
+    jquery_default()("#app-title").text("DeBitpay (Local)");
+    document.title = "DeBitpay (Local)";
   }
 }
 
 function initParseButton() {
-  jquery_default()('#indexForm').submit(function (evt) {
+  jquery_default()("#indexForm").submit(function (evt) {
     evt.preventDefault();
 
     if (!getParsingState()) {
       setParsingState(true);
-      var invUrl = jquery_default()('#indexForm input').val();
+      var invUrl = jquery_default()("#indexForm input").val();
 
       if (invUrl) {
         getAndParsePaymentRequest(normalizePaymentLink(invUrl)).done(function (data) {
-          showModal('Payment Request Data', paymentDataToModalContent(data), {
-            size: 'lg'
+          showModal("Payment Request Data", paymentDataToModalContent(data), {
+            size: "lg"
           });
           setParsingState(false);
         }).fail(function (err) {
-          showModal('Error', err);
+          showModal("Error", err);
           setParsingState(false);
         });
       } else {
-        showModal('Warning', 'Enter Payment URL or Invoice Page URL to continue');
+        showModal("Warning", "Enter Payment URL or Invoice Page URL to continue");
         setParsingState(false);
       }
     }
@@ -539,51 +509,41 @@ function initParseButton() {
 function initHowToRunLocally() {
   if (isLocalApp) {
     // hide 'how to run locally' button if local version is opened
-    jquery_default()('button.how-to-run-locally').remove();
+    jquery_default()("button.how-to-run-locally").remove();
   } else {
-    jquery_default()('button.how-to-run-locally').click(function (evt) {
+    jquery_default()("button.how-to-run-locally").click(function (evt) {
       evt.preventDefault();
-      showModal('How To Run DeBitpay Locally', htmlHowToRunLocally, {
-        size: 'lg'
+      showModal("How To Run DeBitpay Locally", htmlHowToRunLocally, {
+        size: "lg"
       });
     });
   }
 }
 
 function initHowItWorks() {
-  jquery_default()('button.how-it-works').click(function (evt) {
+  jquery_default()("button.how-it-works").click(function (evt) {
     evt.preventDefault();
-    showModal('How It Works', htmlHowItWorks, {
-      size: 'lg'
+    showModal("How It Works", htmlHowItWorks, {
+      size: "lg"
     });
   });
 }
 
 function initImportantNotice() {
-  jquery_default()('button.important-notice').click(function (evt) {
+  jquery_default()("button.important-notice").click(function (evt) {
     evt.preventDefault();
-    showModal('Important Notice', htmlImportantNotice, {
-      size: 'lg'
+    showModal("Important Notice", htmlImportantNotice, {
+      size: "lg"
     });
   });
 }
 
-function initDonate() {
-  jquery_default()('button.donate').click(function (evt) {
-    evt.preventDefault();
-    showDonationScreen();
-  });
-  jquery_default()('button.donate').mouseover(function (_) {
-    preloadDonationScreen();
-  });
-}
-
 function initFooter() {
-  btnToCopyBtn(jquery_default()('footer .btn-clipboard'));
+  btnToCopyBtn(jquery_default()("footer .btn-clipboard"));
 }
 
 function loadingDone() {
-  jquery_default()('body > .is-loading').remove();
+  jquery_default()("body > .is-loading").remove();
 }
 
 function initPage() {
@@ -592,7 +552,6 @@ function initPage() {
   initHowToRunLocally();
   initHowItWorks();
   initImportantNotice();
-  initDonate();
   initFooter();
   loadingDone();
 }
