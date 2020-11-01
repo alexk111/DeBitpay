@@ -359,22 +359,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
 var paymentFormLabels = {
-  'currency': 'Currency',
-  'requiredFeeRate': 'Fee Rate (sats/byte)',
-  'time': 'Created at',
-  'expires': 'Expires at',
-  'memo': 'Memo',
-  'amountBTC': 'Amount',
-  'amount': 'Amount in Satoshis',
-  'address': 'Address',
-  'bip21Link': 'Open in Wallet'
+  currency: "Currency",
+  requiredFeeRate: "Fee Rate (sats/byte)",
+  time: "Created at",
+  expires: "Expires at",
+  memo: "Memo",
+  amountBTC: "Amount",
+  amount: "Amount in Satoshis",
+  address: "Address",
+  bip21Link: "Open in Wallet"
 };
-var paymentFormInfoStruct = [['currency', 'requiredFeeRate'], ['time', 'expires'], 'memo'];
-var paymentFormTxStruct = [['amountBTC', 'amount'], 'address', 'bip21Link'];
-var paymentFormTextAreas = ['memo'];
-var paymentFormLinks = ['bip21Link'];
-var paymentFormQRCodeEnabled = ['bip21Link'];
-var paymentFormCopyEnabled = ['amountBTC', 'amount', 'address'];
+var paymentFormInfoStruct = [["currency", "requiredFeeRate"], ["time", "expires"], "memo"];
+var paymentFormTxStruct = [["amountBTC", "amount"], "address", "bip21Link"];
+var paymentFormTextAreas = ["memo"];
+var paymentFormLinks = ["bip21Link"];
+var paymentFormQRCodeEnabled = ["bip21Link"];
+var paymentFormCopyEnabled = ["amountBTC", "amount", "address"];
 
 function genInputOrTextArea(dataKey, dataVal) {
   if (paymentFormTextAreas.indexOf(dataKey) > -1) {
@@ -393,7 +393,7 @@ function genInputOrTextArea(dataKey, dataVal) {
 }
 
 function genQRCode(dataVal) {
-  var qr = qrcode_default()(0, 'M');
+  var qr = qrcode_default()(0, "M");
   qr.addData(dataVal);
   qr.make();
   return jquery_default()(qr.createImgTag(5));
@@ -416,7 +416,7 @@ function paymentDataToModalContentItem(data, item) {
 
       if (paymentFormQRCodeEnabled.indexOf(item) > -1) {
         var $itemQRCode = genQRCode(data[item]);
-        $itemQRCode.addClass('img-fluid');
+        $itemQRCode.addClass("img-fluid");
         $item.append($itemQRCode);
       }
 
@@ -433,18 +433,19 @@ function paymentDataToModalContentItem(data, item) {
 }
 
 function paymentDataToModalContent(data) {
-  var $content = jquery_default()('<div></div>');
+  var $content = jquery_default()("<div></div>");
   paymentFormInfoStruct.forEach(function (item) {
     $content.append(paymentDataToModalContentItem(data, item));
   });
-  $content.append('<hr>');
+  $content.append("<hr>");
   data.outputs.forEach(function (output) {
     output.amountBTC = satsToBTC(output.amount);
-    output.bip21Link = encodeBip21Link(data.currency === 'BCH', output.address, output.amountBTC, 'Bitpay', 'Payment');
+    output.bip21Link = encodeBip21Link(data.currency === "BCH", output.address, output.amountBTC, "Bitpay", "Payment");
     paymentFormTxStruct.forEach(function (item) {
       $content.append.apply($content, paymentDataToModalContentItem(output, item));
     });
   });
+  $content.append('<div class="alert alert-info mt-3" role="alert">' + '💬 Paid the invoice? Please <a href="https://github.com/alexk111/DeBitpay/issues/23" target="_blank" rel="noopener noreferrer">post a comment</a> to let others know that it still works.' + "</div>");
   return $content;
 }
 // CONCATENATED MODULE: ./src/modules/howToRunLocally.js
