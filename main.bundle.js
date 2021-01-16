@@ -1,182 +1,22 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// install a JSONP callback for chunk loading
-/******/ 	function webpackJsonpCallback(data) {
-/******/ 		var chunkIds = data[0];
-/******/ 		var moreModules = data[1];
-/******/ 		var executeModules = data[2];
-/******/
-/******/ 		// add "moreModules" to the modules object,
-/******/ 		// then flag all "chunkIds" as loaded and fire callback
-/******/ 		var moduleId, chunkId, i = 0, resolves = [];
-/******/ 		for(;i < chunkIds.length; i++) {
-/******/ 			chunkId = chunkIds[i];
-/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
-/******/ 				resolves.push(installedChunks[chunkId][0]);
-/******/ 			}
-/******/ 			installedChunks[chunkId] = 0;
-/******/ 		}
-/******/ 		for(moduleId in moreModules) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				modules[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
-/******/
-/******/ 		while(resolves.length) {
-/******/ 			resolves.shift()();
-/******/ 		}
-/******/
-/******/ 		// add entry modules from loaded chunk to deferred list
-/******/ 		deferredModules.push.apply(deferredModules, executeModules || []);
-/******/
-/******/ 		// run deferred modules when all chunks ready
-/******/ 		return checkDeferredModules();
-/******/ 	};
-/******/ 	function checkDeferredModules() {
-/******/ 		var result;
-/******/ 		for(var i = 0; i < deferredModules.length; i++) {
-/******/ 			var deferredModule = deferredModules[i];
-/******/ 			var fulfilled = true;
-/******/ 			for(var j = 1; j < deferredModule.length; j++) {
-/******/ 				var depId = deferredModule[j];
-/******/ 				if(installedChunks[depId] !== 0) fulfilled = false;
-/******/ 			}
-/******/ 			if(fulfilled) {
-/******/ 				deferredModules.splice(i--, 1);
-/******/ 				result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		return result;
-/******/ 	}
-/******/
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// object to store loaded and loading chunks
-/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 	// Promise = chunk loading, 0 = chunk loaded
-/******/ 	var installedChunks = {
-/******/ 		0: 0
-/******/ 	};
-/******/
-/******/ 	var deferredModules = [];
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
-/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
-/******/ 	jsonpArray.push = webpackJsonpCallback;
-/******/ 	jsonpArray = jsonpArray.slice();
-/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
-/******/ 	var parentJsonpFunction = oldJsonpFunction;
-/******/
-/******/
-/******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([13,1]);
-/******/ 	// run deferred modules when ready
-/******/ 	return checkDeferredModules();
-/******/ })
-/************************************************************************/
-/******/ ({
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
 
-/***/ 13:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 401:
+/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/bootstrap/dist/css/bootstrap.min.css
-var bootstrap_min = __webpack_require__(6);
-
+var bootstrap_min = __webpack_require__(39);
 // EXTERNAL MODULE: ./node_modules/bootstrap/dist/js/bootstrap.js
-var bootstrap = __webpack_require__(9);
-
+var bootstrap = __webpack_require__(734);
 // EXTERNAL MODULE: ./node_modules/jquery/dist/jquery.js
-var jquery = __webpack_require__(0);
+var jquery = __webpack_require__(755);
 var jquery_default = /*#__PURE__*/__webpack_require__.n(jquery);
-
 // EXTERNAL MODULE: ./node_modules/clipboard/dist/clipboard.js
-var dist_clipboard = __webpack_require__(3);
+var dist_clipboard = __webpack_require__(152);
 var clipboard_default = /*#__PURE__*/__webpack_require__.n(dist_clipboard);
-
-// CONCATENATED MODULE: ./src/modules/clipboard.js
+;// CONCATENATED MODULE: ./src/modules/clipboard.js
 
 
 function btnToCopyBtn($btn, $container) {
@@ -185,7 +25,7 @@ function btnToCopyBtn($btn, $container) {
   });
 
   for (var i = 0; i < $btn.length; i++) {
-    var clipboard = new clipboard_default.a($btn[i], {
+    var clipboard = new (clipboard_default())($btn[i], {
       container: $container ? $container[0] : undefined
     });
     clipboard.on('success', function (e) {
@@ -199,7 +39,7 @@ function btnToCopyBtn($btn, $container) {
     });
   }
 }
-// CONCATENATED MODULE: ./src/modules/paymentLink.js
+;// CONCATENATED MODULE: ./src/modules/paymentLink.js
 function normalizePaymentLink(paymentLink) {
   var pos = paymentLink.indexOf('?id=');
 
@@ -211,10 +51,9 @@ function normalizePaymentLink(paymentLink) {
   return paymentLink;
 }
 // EXTERNAL MODULE: ./node_modules/url-parse/index.js
-var url_parse = __webpack_require__(4);
+var url_parse = __webpack_require__(564);
 var url_parse_default = /*#__PURE__*/__webpack_require__.n(url_parse);
-
-// CONCATENATED MODULE: ./src/modules/paymentRequest.js
+;// CONCATENATED MODULE: ./src/modules/paymentRequest.js
  // import shajs from 'sha.js'
 
 
@@ -225,8 +64,8 @@ var url_parse_default = /*#__PURE__*/__webpack_require__.n(url_parse);
 */
 
 function getRawPaymentRequest(paymentUrl) {
-  var deferred = jquery_default.a.Deferred();
-  var paymentUrlObject = new url_parse_default.a(paymentUrl, true); // Detect 'bitcoin:' urls and extract payment-protocol section
+  var deferred = jquery_default().Deferred();
+  var paymentUrlObject = new (url_parse_default())(paymentUrl, true); // Detect 'bitcoin:' urls and extract payment-protocol section
 
   if (paymentUrlObject.protocol !== 'http:' && paymentUrlObject.protocol !== 'https:') {
     if (!paymentUrlObject.query.r) {
@@ -243,7 +82,7 @@ function getRawPaymentRequest(paymentUrl) {
       'Accept': 'application/payment-request'
     }
   };
-  jquery_default.a.get(requestOptions).done(function (data, textStatus, jqXHR) {
+  jquery_default().get(requestOptions).done(function (data, textStatus, jqXHR) {
     /* See [Header Issue] section above
     const digest = jqXHR.getResponseHeader('digest')
     if (digest) {
@@ -260,7 +99,7 @@ function getRawPaymentRequest(paymentUrl) {
 }
 
 function parsePaymentRequest(rawBody, digestHeader) {
-  var deferred = jquery_default.a.Deferred();
+  var deferred = jquery_default().Deferred();
   var paymentRequest;
 
   if (!rawBody) {
@@ -291,7 +130,7 @@ function parsePaymentRequest(rawBody, digestHeader) {
 }
 
 function getAndParsePaymentRequest(paymentUrl) {
-  var deferred = jquery_default.a.Deferred();
+  var deferred = jquery_default().Deferred();
   getRawPaymentRequest(paymentUrl).done(function (data, digest) {
     parsePaymentRequest(data, digest).done(function (parsedRequest) {
       deferred.resolve(parsedRequest);
@@ -303,7 +142,7 @@ function getAndParsePaymentRequest(paymentUrl) {
   });
   return deferred;
 }
-// CONCATENATED MODULE: ./src/modules/modals.js
+;// CONCATENATED MODULE: ./src/modules/modals.js
 
 
 var tplModal = "\n<div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\"></h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n      </div>\n    </div>\n  </div>\n</div>\n";
@@ -330,7 +169,7 @@ function showModal(title, $content, opts) {
   });
   btnToCopyBtn(jquery_default()('.btn-clipboard', $modal), $modal);
 }
-// CONCATENATED MODULE: ./src/modules/bip21Link.js
+;// CONCATENATED MODULE: ./src/modules/bip21Link.js
 // Implements BIP 0021 Link Encoding
 // More: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
 // Format:
@@ -343,15 +182,14 @@ function encodeBip21Link(isBCH, address, amount, label, message) {
   if (message) parts.push('message=' + encodeURIComponent(message));
   return (isBCH ? 'bitcoincash' : 'bitcoin') + ':' + address + (parts ? '?' + parts.join('&') : '');
 }
-// CONCATENATED MODULE: ./src/modules/currency.js
+;// CONCATENATED MODULE: ./src/modules/currency.js
 function satsToBTC(sats) {
   return sats / 100000000;
 }
 // EXTERNAL MODULE: ./node_modules/qrcode-generator/qrcode.js
-var qrcode = __webpack_require__(5);
+var qrcode = __webpack_require__(192);
 var qrcode_default = /*#__PURE__*/__webpack_require__.n(qrcode);
-
-// CONCATENATED MODULE: ./src/modules/paymentModal.js
+;// CONCATENATED MODULE: ./src/modules/paymentModal.js
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -448,13 +286,13 @@ function paymentDataToModalContent(data) {
   $content.append('<div class="alert alert-info mt-3" role="alert">' + '💬 Paid the invoice? Please <a href="https://github.com/alexk111/DeBitpay/issues/23" target="_blank" rel="noopener noreferrer">post a comment</a> to let others know that it still works.' + "</div>");
   return $content;
 }
-// CONCATENATED MODULE: ./src/modules/howToRunLocally.js
+;// CONCATENATED MODULE: ./src/modules/howToRunLocally.js
 var htmlHowToRunLocally = "\n  <p>For increased security, you can run DeBitpay on your computer instead of from the GitHub servers.</p>\n  <p class=\"h5\">Downloading and installing</p>\n  <ol>\n    <li>Download the latest release of DeBitpay <a href=\"https://github.com/alexk111/DeBitpay/releases\" target=\"_blank\">here</a>, by clicking on <code>debitpay-vX.X.X.zip</code> under the release assets </li>\n    <li>Extract the downloaded zip archive to a folder at your computer. You should now have a folder containing three files: <code>index.html</code>, <code>main.bundle.js</code> and <code>vendors.bundle.js</code></li>\n  </ol>\n  <p class=\"h5\">Running DeBitpay locally</p>\n  <ol>\n    <li>Double-click the <code>index.html</code> file</li>\n    <li>Local version of DeBitpay should open in your browser</li>\n  </ol>\n";
-// CONCATENATED MODULE: ./src/modules/howItWorks.js
+;// CONCATENATED MODULE: ./src/modules/howItWorks.js
 var htmlHowItWorks = "\n  <p>When you press the <i>Get Transaction Requirements</i> button:</p>\n  <ol>\n    <li>DeBitpay extracts an invoice url from the entered payment url (string after 'bitcoin:?r='), or keeps the url as is if you entered an invoice url (begins with http:// or https://)</li>\n    <li>DeBitpay loads data from the invoice url using a HTTP GET request with 'Accept: application/payment-request' header</li>\n    <li>DeBitpay shows a window with the data returned by the invoice url, structured and formatted for convenience. Bitcoin amount is calculated from satoshis data, QR Code image and Open In Wallet button are rendered from Address and Amount data, the rest data is shown as-is without modifications.</li>\n  </ol>\n  <p class=\"alert alert-info\">Entered Invoice URL is the only external resource DeBitpay connects to. No analytics, no external scripts, etc.</p>\n";
-// CONCATENATED MODULE: ./src/modules/importantNotice.js
+;// CONCATENATED MODULE: ./src/modules/importantNotice.js
 var htmlImportantNotice = "\n  <p>DeBitpay should be used as a temporary solution - that's not how Bitcoin transactions supposed to work! Each time you extract data with DeBitpay and pay an invoice, please ask the merchant to switch to another payment processor. <a href=\"https://alexk111.github.io/DeBitpay-Merchants/\" target=\"_blank\">Read more...</a></p>\n";
-// CONCATENATED MODULE: ./src/modules/page.js
+;// CONCATENATED MODULE: ./src/modules/page.js
 
 
 
@@ -556,7 +394,7 @@ function initPage() {
   initFooter();
   loadingDone();
 }
-// CONCATENATED MODULE: ./src/index.js
+;// CONCATENATED MODULE: ./src/index.js
 
 
 
@@ -564,4 +402,181 @@ initPage();
 
 /***/ })
 
-/******/ });
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			id: moduleId,
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/******/ 	// the startup function
+/******/ 	// It's empty as some runtime module handles the default behavior
+/******/ 	__webpack_require__.x = x => {}
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => module['default'] :
+/******/ 				() => module;
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// Promise = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			179: 0
+/******/ 		};
+/******/ 		
+/******/ 		var deferredModules = [
+/******/ 			[401,216]
+/******/ 		];
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		var checkDeferredModules = x => {};
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime, executeModules] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0, resolves = [];
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					resolves.push(installedChunks[chunkId][0]);
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			for(moduleId in moreModules) {
+/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 				}
+/******/ 			}
+/******/ 			if(runtime) runtime(__webpack_require__);
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			while(resolves.length) {
+/******/ 				resolves.shift()();
+/******/ 			}
+/******/ 		
+/******/ 			// add entry modules from loaded chunk to deferred list
+/******/ 			if(executeModules) deferredModules.push.apply(deferredModules, executeModules);
+/******/ 		
+/******/ 			// run deferred modules when all chunks ready
+/******/ 			return checkDeferredModules();
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkdebitpay"] = self["webpackChunkdebitpay"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 		
+/******/ 		function checkDeferredModulesImpl() {
+/******/ 			var result;
+/******/ 			for(var i = 0; i < deferredModules.length; i++) {
+/******/ 				var deferredModule = deferredModules[i];
+/******/ 				var fulfilled = true;
+/******/ 				for(var j = 1; j < deferredModule.length; j++) {
+/******/ 					var depId = deferredModule[j];
+/******/ 					if(installedChunks[depId] !== 0) fulfilled = false;
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferredModules.splice(i--, 1);
+/******/ 					result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
+/******/ 				}
+/******/ 			}
+/******/ 			if(deferredModules.length === 0) {
+/******/ 				__webpack_require__.x();
+/******/ 				__webpack_require__.x = x => {};
+/******/ 			}
+/******/ 			return result;
+/******/ 		}
+/******/ 		var startup = __webpack_require__.x;
+/******/ 		__webpack_require__.x = () => {
+/******/ 			// reset startup function so it can be called again when more startup code is added
+/******/ 			__webpack_require__.x = startup || (x => {});
+/******/ 			return (checkDeferredModules = checkDeferredModulesImpl)();
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	// run startup
+/******/ 	return __webpack_require__.x();
+/******/ })()
+;
