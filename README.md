@@ -47,8 +47,6 @@ Go to /dist folder and open *index.html* with your browser.
 
 ## Backers 💝
 
-[[Become a backer](https://mynode.alexkaul.com/gh-donate)]
-
 [![Backer](https://mynode.alexkaul.com/gh-backer/top/0/avatar/60)](https://mynode.alexkaul.com/gh-backer/top/0/profile)
 [![Backer](https://mynode.alexkaul.com/gh-backer/top/1/avatar/60)](https://mynode.alexkaul.com/gh-backer/top/1/profile)
 [![Backer](https://mynode.alexkaul.com/gh-backer/top/2/avatar/60)](https://mynode.alexkaul.com/gh-backer/top/2/profile)
@@ -59,6 +57,10 @@ Go to /dist folder and open *index.html* with your browser.
 [![Backer](https://mynode.alexkaul.com/gh-backer/top/7/avatar/60)](https://mynode.alexkaul.com/gh-backer/top/7/profile)
 [![Backer](https://mynode.alexkaul.com/gh-backer/top/8/avatar/60)](https://mynode.alexkaul.com/gh-backer/top/8/profile)
 [![Backer](https://mynode.alexkaul.com/gh-backer/top/9/avatar/60)](https://mynode.alexkaul.com/gh-backer/top/9/profile)
+
+Thank you for your support! 🙌
+
+[[Donate](https://mynode.alexkaul.com/gh-donate)]
 
 ## License
 
