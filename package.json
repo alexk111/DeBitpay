@@ -1,6 +1,6 @@
 {
   "name": "debitpay",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Simple app which decodes Bitpay payment links into Bitcoin transaction requirements, so that you could make the payments with Bitcoin wallets not supporting Bitpay.",
   "main": "index.js",
   "scripts": {
