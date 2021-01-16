@@ -15,10 +15,10 @@ jobs:
         shell: bash
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
 
-      - uses: actions/checkout@v2.2.0
+      - uses: actions/checkout@v2.3.4
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v1.4.2
+        uses: actions/setup-node@v2.1.4
         with:
           node-version: 12.16.1
 
@@ -31,7 +31,7 @@ jobs:
           yarn build
 
       - name: Deploy to gh-pages
-        uses: JamesIves/github-pages-deploy-action@3.5.9
+        uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
